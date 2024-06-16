@@ -1,0 +1,28 @@
+﻿using Core.Entities;
+using Core.Ports;
+using Core.ValueObjects;
+
+namespace Core.UseCases;
+public class CreateQuestionUseCase
+{
+    private readonly IQuestionRepository _questionRepository;
+
+    public CreateQuestionUseCase(IQuestionRepository questionRepository)
+    {
+        _questionRepository = questionRepository;
+    }
+
+    public async Task<Question> Execute(CreateQuestionRequest createQuestionRequest)
+    {
+        var question = new Question()
+        {
+            Text = createQuestionRequest.Text,
+            AnswerText = createQuestionRequest.AnswerText,
+            QuestionType = createQuestionRequest.QuestionType,
+        };
+
+        await _questionRepository.Store(question);
+
+        return await Task.FromResult(question);
+    }
+}

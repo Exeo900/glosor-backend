@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Question]
+(
+	[Id] UNIQUEIDENTIFIER CONSTRAINT [PK_Question_Id] PRIMARY KEY default NEWID(),
+	[Text] NVARCHAR(255) NOT NULL,
+	[AnswerText] NVARCHAR(255) NOT NULL,
+	[QuestionTypeId] INT NOT NULL
+)
+
