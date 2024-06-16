@@ -1,15 +1,31 @@
+using Core.Ports;
 using glosor_backend;
+using Adapter.Persistence.SqlServer.Repositories;
+using Core.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", builder =>
+    {
+        builder.WithOrigins(
+                    "https://localhost:*",
+                    "https://127.0.0.1:*"
+                )
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<CreateQuestionUseCase>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -19,5 +35,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.ConfigureApi();
+
+app.UseCors("AllowFrontend");
 
 app.Run();
