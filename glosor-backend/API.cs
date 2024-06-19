@@ -1,5 +1,8 @@
-﻿using Core.UseCases;
+﻿using Core.Entities;
+using Core.Entities.Enums;
+using Core.UseCases;
 using glosor_backend.Dtos;
+using System;
 
 namespace glosor_backend;
 
@@ -9,6 +12,7 @@ public static class API
     {
         webApplicationBuilder.MapGet("siteInfo", SiteInfo);
         webApplicationBuilder.MapPost("glosorQuestion", CreateQuestionRequest);
+        webApplicationBuilder.MapGet("glosorQuestion", GetAllQuestionRequests);
     }
 
     private static IResult SiteInfo(IConfiguration configuration, IWebHostEnvironment env)
@@ -30,14 +34,24 @@ public static class API
             return Results.BadRequest();
         }
 
+        if (!Enum.IsDefined(typeof(QuestionType), createQuestionRequest.QuestionTypeId))
+        {
+            return Results.BadRequest($"Question type does not exists: {createQuestionRequest.QuestionTypeId}");
+        }
+
        await createQuestionUseCase.Execute(new Core.ValueObjects.CreateQuestionRequest()
        {
             Text = createQuestionRequest.Text,
             AnswerText = createQuestionRequest.AnswerText,
-            QuestionType = createQuestionRequest.QuestionType
+            QuestionType = createQuestionRequest.QuestionTypeId
         });
 
-        throw new NotImplementedException();
+        return Results.Ok("Created");
+    }
+
+    public static async Task<IEnumerable<Question>> GetAllQuestionRequests(GetAllQuestionsUseCase getAllQuestionsUseCase)
+    {
+        return await getAllQuestionsUseCase.Execute();
     }
 }
 

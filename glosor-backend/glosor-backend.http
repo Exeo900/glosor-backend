@@ -1,6 +1,6 @@
 @glosor_backend_HostAddress = http://localhost:5252
 
-GET {{glosor_backend_HostAddress}}/weatherforecast/
+GET {{glosor_backend_HostAddress}}/glosorQuestion/
 Accept: application/json
 
 ###
