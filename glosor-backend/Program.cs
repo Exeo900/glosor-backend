@@ -24,6 +24,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<CreateQuestionUseCase>();
 builder.Services.AddScoped<GetAllQuestionsUseCase>();
+builder.Services.AddScoped<GetQuestionUseCase>();
+builder.Services.AddScoped<UpdateQuestionUseCase>();
+builder.Services.AddScoped<DeleteQuestionUseCase>();
 
 var app = builder.Build();
 

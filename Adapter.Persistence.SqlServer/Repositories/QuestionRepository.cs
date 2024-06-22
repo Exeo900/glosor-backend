@@ -53,4 +53,35 @@ public class QuestionRepository : IQuestionRepository
             var result = await connection.ExecuteAsync(insertQuery, question);
         }
     }
+
+    public async Task<bool> Update(Question question)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        {
+            await connection.OpenAsync();
+
+            var updateQuery =
+                @"UPDATE [dbo].Question SET 
+                    Text = @Text, 
+                    AnswerText = @AnswerText, 
+                    QuestionTypeId = @QuestionTypeId 
+                WHERE Id = @Id";
+
+           var result = await connection.ExecuteAsync(updateQuery, question);
+
+           return result > 0;
+        }
+    }
+
+    public async Task<bool> Delete(Guid id)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        {
+            await connection.OpenAsync();
+
+            var result = await connection.ExecuteAsync(@"DELETE FROM [dbo].Question WHERE Id = @Id", new { Id = id.ToString() });
+
+            return result > 0;
+        }
+    }
 }

@@ -6,4 +6,6 @@ public interface IQuestionRepository
     Task<Question> Get(Guid id);
     Task<IEnumerable<Question>> GetAll();
     Task Store(Question question);
+    Task<bool> Update(Question question);
+    Task<bool> Delete(Guid id);
 }

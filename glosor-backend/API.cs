@@ -2,7 +2,6 @@
 using Core.Entities.Enums;
 using Core.UseCases;
 using glosor_backend.Dtos;
-using System;
 
 namespace glosor_backend;
 
@@ -10,9 +9,12 @@ public static class API
 {
     public static void ConfigureApi(this WebApplication webApplicationBuilder)
     {
-        webApplicationBuilder.MapGet("siteInfo", SiteInfo);
-        webApplicationBuilder.MapPost("glosorQuestion", CreateQuestionRequest);
-        webApplicationBuilder.MapGet("glosorQuestion", GetAllQuestionRequests);
+        webApplicationBuilder.MapGet("/siteInfo", SiteInfo);
+        webApplicationBuilder.MapPost("/glosorQuestions", CreateQuestionRequest);
+        webApplicationBuilder.MapGet("/glosorQuestions", GetAllQuestionRequests);
+        webApplicationBuilder.MapGet("/glosorQuestions/{Id:guid}", GetQuestionRequest);
+        webApplicationBuilder.MapPut("/glosorQuestions", UpdateQuestionRequest);
+        webApplicationBuilder.MapDelete("/glosorQuestions", DeleteQuestionRequest);
     }
 
     private static IResult SiteInfo(IConfiguration configuration, IWebHostEnvironment env)
@@ -52,6 +54,33 @@ public static class API
     public static async Task<IEnumerable<Question>> GetAllQuestionRequests(GetAllQuestionsUseCase getAllQuestionsUseCase)
     {
         return await getAllQuestionsUseCase.Execute();
+    }
+
+    public static async Task<Question> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
+    {
+        return await getAllQuestionsUseCase.Execute(new Core.ValueObjects.GetQuestionRequest()
+        {
+            Id = id
+        });
+    }
+
+    public static async Task<bool> UpdateQuestionRequest(UpdateQuestionRequest updateQuestionRequest, UpdateQuestionUseCase updateQuestionUseCase)
+    {
+        return await updateQuestionUseCase.Execute(new Core.ValueObjects.UpdateQuestionRequest()
+        {
+            Id = updateQuestionRequest.Id,
+            Text = updateQuestionRequest.Text,
+            AnswerText = updateQuestionRequest.AnswerText,
+            QuestionType = updateQuestionRequest.QuestionTypeId
+        });
+    }
+
+    public static async Task<bool> DeleteQuestionRequest(DeleteQuestionUseCase deleteQuestionUseCase, Guid id)
+    {
+        return await deleteQuestionUseCase.Execute(new Core.ValueObjects.DeleteQuestionRequest()
+        {
+            Id = id
+        });
     }
 }
 
