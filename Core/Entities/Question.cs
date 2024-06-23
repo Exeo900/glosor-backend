@@ -11,4 +11,9 @@ public class Question : Entity
         get { return (QuestionType) QuestionTypeId; }
         set { QuestionTypeId = (int) value; }
     }
+
+    public string? Description { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public int Occurrences { get; set; }
+    public int IncorrectAnswers { get; set; }
 }

@@ -5,4 +5,5 @@ public class UpdateQuestionRequest
     public string Text { get; init; } = default!;
     public string AnswerText { get; init; } = default!;
     public int QuestionType { get; init; }
+    public string? Description { get; init; }
 }

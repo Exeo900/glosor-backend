@@ -45,7 +45,8 @@ public static class API
        {
             Text = createQuestionRequest.Text,
             AnswerText = createQuestionRequest.AnswerText,
-            QuestionType = createQuestionRequest.QuestionTypeId
+            QuestionType = createQuestionRequest.QuestionTypeId,
+            Description = createQuestionRequest.Description
         });
 
         return Results.Ok("Created");
@@ -58,10 +59,7 @@ public static class API
 
     public static async Task<Question> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
     {
-        return await getAllQuestionsUseCase.Execute(new Core.ValueObjects.GetQuestionRequest()
-        {
-            Id = id
-        });
+        return await getAllQuestionsUseCase.Execute(new Core.ValueObjects.GetQuestionRequest() { Id = id });
     }
 
     public static async Task<bool> UpdateQuestionRequest(UpdateQuestionRequest updateQuestionRequest, UpdateQuestionUseCase updateQuestionUseCase)
@@ -71,16 +69,14 @@ public static class API
             Id = updateQuestionRequest.Id,
             Text = updateQuestionRequest.Text,
             AnswerText = updateQuestionRequest.AnswerText,
-            QuestionType = updateQuestionRequest.QuestionTypeId
+            QuestionType = updateQuestionRequest.QuestionTypeId,
+            Description = updateQuestionRequest.Description
         });
     }
 
     public static async Task<bool> DeleteQuestionRequest(DeleteQuestionUseCase deleteQuestionUseCase, Guid id)
     {
-        return await deleteQuestionUseCase.Execute(new Core.ValueObjects.DeleteQuestionRequest()
-        {
-            Id = id
-        });
+        return await deleteQuestionUseCase.Execute(new Core.ValueObjects.DeleteQuestionRequest() { Id = id });
     }
 }
 

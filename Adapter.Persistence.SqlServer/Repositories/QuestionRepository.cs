@@ -19,7 +19,7 @@ public class QuestionRepository : IQuestionRepository
         {
             await connection.OpenAsync();
 
-            string query = $"SELECT Id, Text, AnswerText, QuestionTypeId FROM Question WHERE Id = '{id}'";
+            string query = $"SELECT Id, Text, AnswerText, QuestionTypeId, Description, CreatedDate, Occurrences, IncorrectAnswers FROM Question WHERE Id = '{id}'";
 
             var question = await connection.QueryFirstAsync<Question>(query);
 
@@ -33,7 +33,7 @@ public class QuestionRepository : IQuestionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT Id, Text, AnswerText, QuestionTypeId FROM [dbo].Question";
+            string query = "SELECT Id, Text, AnswerText, QuestionTypeId, Description, CreatedDate, Occurrences, IncorrectAnswers FROM [dbo].Question";
 
             return await connection.QueryAsync<Question>(query);
         }
@@ -45,7 +45,11 @@ public class QuestionRepository : IQuestionRepository
         {
             await connection.OpenAsync();
 
-            string insertQuery = "INSERT INTO [dbo].Question (Text, AnswerText, QuestionTypeId) VALUES (@Text, @AnswerText, @QuestionTypeId);";
+            string insertQuery = "" +
+                "INSERT INTO [dbo].Question " +
+                "(Text, AnswerText, QuestionTypeId, Description) " +
+                "VALUES " +
+                "(@Text, @AnswerText, @QuestionTypeId, @Description);";
 
             var result = await connection.ExecuteAsync(insertQuery, question);
         }
