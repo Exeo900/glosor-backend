@@ -1,22 +1,21 @@
-﻿using Core.Entities;
+﻿using Adapter.Persistence.SqlServer.ConnectionFactory;
+using Core.Entities;
 using Core.Ports;
 using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 
 namespace Adapter.Persistence.SqlServer.Repositories;
 public class QuestionRepository : IQuestionRepository
 {
-    public readonly IConfiguration _configuration;
+    public readonly IConnectionFactory _connectionFactory;
 
-    public QuestionRepository(IConfiguration configuration)
+    public QuestionRepository(IConnectionFactory configuration)
     {
-        _configuration = configuration;
+        _connectionFactory = configuration;
     }
 
     public async Task<Question> Get(Guid id)
     {
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        using (var connection = _connectionFactory.CreateConnection())
         {
             await connection.OpenAsync();
 
@@ -30,9 +29,7 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task<IEnumerable<Question>> GetAll()
     {
-        var connectionString = _configuration.GetConnectionString("Default");
-
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = _connectionFactory.CreateConnection())
         {
             await connection.OpenAsync();
 
@@ -44,7 +41,7 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task Store(Question question)
     {
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        using (var connection = _connectionFactory.CreateConnection())
         {
             await connection.OpenAsync();
 
@@ -56,7 +53,7 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task<bool> Update(Question question)
     {
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        using (var connection = _connectionFactory.CreateConnection())
         {
             await connection.OpenAsync();
 
@@ -75,7 +72,7 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task<bool> Delete(Guid id)
     {
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        using (var connection = _connectionFactory.CreateConnection())
         {
             await connection.OpenAsync();
 

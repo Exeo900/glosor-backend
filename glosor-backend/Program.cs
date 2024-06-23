@@ -2,6 +2,7 @@ using Core.Ports;
 using glosor_backend;
 using Adapter.Persistence.SqlServer.Repositories;
 using Core.UseCases;
+using Adapter.Persistence.SqlServer.ConnectionFactory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IConnectionFactory, ConnectionFactory>();
 builder.Services.AddScoped<CreateQuestionUseCase>();
 builder.Services.AddScoped<GetAllQuestionsUseCase>();
 builder.Services.AddScoped<GetQuestionUseCase>();
