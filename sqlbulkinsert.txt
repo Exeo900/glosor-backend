@@ -1,0 +1,21 @@
+DECLARE @json NVARCHAR(MAX) = 
+N'';
+
+INSERT INTO Question (id, createdDate,  AnswerText, QuestionTypeId, description, QuestionCollectionId, occurrences, incorrectAnswers, text)
+SELECT
+    JSON_VALUE(value, '$.id') AS id,
+    JSON_VALUE(value, '$.createdDate') AS createdDate,
+    JSON_VALUE(value, '$.wordAnswer.text') AS AnswerText,
+    CASE JSON_VALUE(value, '$.wordType')
+        WHEN 'Noun' THEN 1
+        WHEN 'Adjective' THEN 2
+        WHEN 'Verb' THEN 3
+        WHEN 'Other' THEN 4
+        ELSE NULL 
+    END AS QuestionTypeId,
+    JSON_VALUE(value, '$.description') AS description,
+    JSON_VALUE(value, '$.wordCollectionId') AS QuestionCollectionId,
+    JSON_VALUE(value, '$.occurrences') AS occurrences,
+    JSON_VALUE(value, '$.incorrectAnswers') AS incorrectAnswers,
+    JSON_VALUE(value, '$.text') AS text
+FROM OPENJSON(@json);
