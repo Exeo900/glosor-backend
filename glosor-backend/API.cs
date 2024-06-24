@@ -46,7 +46,8 @@ public static class API
             Text = createQuestionRequest.Text,
             AnswerText = createQuestionRequest.AnswerText,
             QuestionType = createQuestionRequest.QuestionTypeId,
-            Description = createQuestionRequest.Description
+            Description = createQuestionRequest.Description,
+            QuestionCollectionId = createQuestionRequest.QuestionCollectionId
         });
 
         return Results.Ok("Created");
@@ -57,7 +58,7 @@ public static class API
         return await getAllQuestionsUseCase.Execute();
     }
 
-    public static async Task<Question> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
+    public static async Task<Question?> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
     {
         return await getAllQuestionsUseCase.Execute(new Core.ValueObjects.GetQuestionRequest() { Id = id });
     }

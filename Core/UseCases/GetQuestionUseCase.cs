@@ -12,7 +12,7 @@ public class GetQuestionUseCase
         _questionRepository = questionRepository;
     }
 
-    public async Task<Question> Execute(GetQuestionRequest getQuestionRequest)
+    public async Task<Question?> Execute(GetQuestionRequest getQuestionRequest)
     {
         return await _questionRepository.Get(getQuestionRequest.Id);
     }

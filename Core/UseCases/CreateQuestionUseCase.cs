@@ -19,7 +19,8 @@ public class CreateQuestionUseCase
             Text = createQuestionRequest.Text,
             AnswerText = createQuestionRequest.AnswerText,
             QuestionTypeId = createQuestionRequest.QuestionType,
-            Description = createQuestionRequest.Description
+            Description = createQuestionRequest.Description,
+            QuestionCollectionId = createQuestionRequest.QuestionCollectionId
         };
 
         await _questionRepository.Store(question);

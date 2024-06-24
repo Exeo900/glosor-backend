@@ -16,4 +16,6 @@ public class Question : Entity
     public DateTime CreatedDate { get; set; }
     public int Occurrences { get; set; }
     public int IncorrectAnswers { get; set; }
+    public Guid QuestionCollectionId { get; set; }
+    public QuestionCollection QuestionCollection { get; set; } = default!;
 }

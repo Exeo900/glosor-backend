@@ -69,5 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Question.sql" />
+    <Build Include="dbo\Tables\QuestionCollection.sql" />
   </ItemGroup>
 </Project>

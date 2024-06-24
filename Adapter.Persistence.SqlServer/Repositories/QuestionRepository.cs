@@ -13,17 +13,25 @@ public class QuestionRepository : IQuestionRepository
         _connectionFactory = configuration;
     }
 
-    public async Task<Question> Get(Guid id)
+    public async Task<Question?> Get(Guid id)
     {
         using (var connection = _connectionFactory.CreateConnection())
         {
             await connection.OpenAsync();
 
-            string query = $"SELECT Id, Text, AnswerText, QuestionTypeId, Description, CreatedDate, Occurrences, IncorrectAnswers FROM Question WHERE Id = '{id}'";
+            string query = $@"
+                SELECT q.Id, q.Text, q.AnswerText, q.QuestionTypeId, q.Description, q.CreatedDate, q.Occurrences, q.IncorrectAnswers, q.QuestionCollectionId, qc.Id, qc.Name, qc.Description 
+                FROM [dbo].Question q
+                INNER JOIN [dbo].QuestionCollection qc ON q.[QuestionCollectionId] = qc.Id 
+                WHERE q.Id = '{id}'";
 
-            var question = await connection.QueryFirstAsync<Question>(query);
+            var result = await connection.QueryAsync<Question, QuestionCollection, Question>(query, (question, questionCollection) =>
+            {
+                question.QuestionCollection = questionCollection;
+                return question;
+            });
 
-            return question;
+            return result.SingleOrDefault();
         }
     }
 
@@ -33,9 +41,16 @@ public class QuestionRepository : IQuestionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT Id, Text, AnswerText, QuestionTypeId, Description, CreatedDate, Occurrences, IncorrectAnswers FROM [dbo].Question";
+            string query = @"
+                SELECT q.Id, q.Text, q.AnswerText, q.QuestionTypeId, q.Description, q.CreatedDate, q.Occurrences, q.IncorrectAnswers, q.QuestionCollectionId, qc.Id, qc.Name, qc.Description 
+                FROM [dbo].Question q
+                INNER JOIN [dbo].QuestionCollection qc ON q.[QuestionCollectionId] = qc.Id";
 
-            return await connection.QueryAsync<Question>(query);
+            return await connection.QueryAsync<Question, QuestionCollection, Question>(query, (question, questionCollection) =>
+            {
+                question.QuestionCollection = questionCollection;
+                return question;
+            });
         }
     }
 
@@ -47,9 +62,9 @@ public class QuestionRepository : IQuestionRepository
 
             string insertQuery = "" +
                 "INSERT INTO [dbo].Question " +
-                "(Text, AnswerText, QuestionTypeId, Description) " +
+                "(Text, AnswerText, QuestionTypeId, Description, QuestionCollectionId) " +
                 "VALUES " +
-                "(@Text, @AnswerText, @QuestionTypeId, @Description);";
+                "(@Text, @AnswerText, @QuestionTypeId, @Description, @QuestionCollectionId);";
 
             var result = await connection.ExecuteAsync(insertQuery, question);
         }
@@ -65,7 +80,8 @@ public class QuestionRepository : IQuestionRepository
                 @"UPDATE [dbo].Question SET 
                     Text = @Text, 
                     AnswerText = @AnswerText, 
-                    QuestionTypeId = @QuestionTypeId 
+                    QuestionTypeId = @QuestionTypeId,
+                    Description = @Description
                 WHERE Id = @Id";
 
            var result = await connection.ExecuteAsync(updateQuery, question);

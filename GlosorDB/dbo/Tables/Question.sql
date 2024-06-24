@@ -8,5 +8,8 @@
 	[CreatedDate] DATETIME NOT NULL DEFAULT GETDATE(),
 	[Occurrences] INT NOT NULL DEFAULT (0),
 	[IncorrectAnswers] INT NOT NULL DEFAULT (0),
+	[QuestionCollectionId] UNIQUEIDENTIFIER NOT NULL,
+	CONSTRAINT FK_QuestionCollection_Id FOREIGN KEY (QuestionCollectionId) REFERENCES QuestionCollection(Id)
 )
+
 
