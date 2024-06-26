@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GlosorDB.publish.xml" />
+    <None Include="GlosorDB-Azure.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
