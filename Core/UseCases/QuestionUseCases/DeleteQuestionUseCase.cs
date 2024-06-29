@@ -1,7 +1,7 @@
 ﻿using Core.Ports;
-using Core.ValueObjects;
+using Core.ValueObjects.QuestionObjects;
 
-namespace Core.UseCases;
+namespace Core.UseCases.QuestionUseCases;
 public class DeleteQuestionUseCase
 {
     private readonly IQuestionRepository _questionRepository;

@@ -1,8 +1,9 @@
 using Core.Ports;
-using glosor_backend;
 using Adapter.Persistence.SqlServer.Repositories;
-using Core.UseCases;
 using Adapter.Persistence.SqlServer.ConnectionFactory;
+using glosor_backend.API;
+using Core.UseCases.QuestionUseCases;
+using Core.UseCases.QuestionCollectionUseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +24,19 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IQuestionCollectionRepository, QuestionCollectionRepository>();
 builder.Services.AddScoped<IConnectionFactory, ConnectionFactory>();
+
 builder.Services.AddScoped<CreateQuestionUseCase>();
 builder.Services.AddScoped<GetAllQuestionsUseCase>();
 builder.Services.AddScoped<GetQuestionUseCase>();
 builder.Services.AddScoped<UpdateQuestionUseCase>();
 builder.Services.AddScoped<DeleteQuestionUseCase>();
+
+builder.Services.AddScoped<GetAllQuestionsCollectionUseCase>();
+builder.Services.AddScoped<GetQuestionsCollectionUseCase>();
+builder.Services.AddScoped<CreateQuestionsCollectionUseCase>();
+builder.Services.AddScoped<UpdateQuestionsCollectionUseCase>();
 
 var app = builder.Build();
 

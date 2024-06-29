@@ -1,4 +1,5 @@
-﻿namespace Core.ValueObjects;
+﻿namespace Core.ValueObjects.QuestionObjects;
+
 public class CreateQuestionRequest
 {
     public string Text { get; init; } = default!;

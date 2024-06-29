@@ -1,7 +1,7 @@
 ﻿using Core.Entities;
 using Core.Ports;
 
-namespace Core.UseCases;
+namespace Core.UseCases.QuestionUseCases;
 public class GetAllQuestionsUseCase
 {
     private readonly IQuestionRepository _questionRepository;

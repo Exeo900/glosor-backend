@@ -1,8 +1,8 @@
 ﻿using Core.Entities;
 using Core.Ports;
-using Core.ValueObjects;
+using Core.ValueObjects.QuestionObjects;
 
-namespace Core.UseCases;
+namespace Core.UseCases.QuestionUseCases;
 public class CreateQuestionUseCase
 {
     private readonly IQuestionRepository _questionRepository;
