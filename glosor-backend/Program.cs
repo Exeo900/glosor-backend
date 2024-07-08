@@ -15,16 +15,19 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", builder =>
     {
         builder.WithOrigins(
+                    "http://localhost:*",
+                    "http://localhost:5173",
                     "https://localhost:*",
                     "https://127.0.0.1:*"
                 )
         .AllowAnyMethod()
-        .AllowAnyHeader();
+        .AllowAnyHeader(); 
     });
 });
 
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionCollectionRepository, QuestionCollectionRepository>();
+builder.Services.AddScoped<IWordQuestionRepository, WordQuestionRepository>();
 builder.Services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
 builder.Services.AddScoped<CreateQuestionUseCase>();
@@ -32,6 +35,7 @@ builder.Services.AddScoped<GetAllQuestionsUseCase>();
 builder.Services.AddScoped<GetQuestionUseCase>();
 builder.Services.AddScoped<UpdateQuestionUseCase>();
 builder.Services.AddScoped<DeleteQuestionUseCase>();
+builder.Services.AddScoped<GetRandomQuestionUseCase>();
 
 builder.Services.AddScoped<GetAllQuestionsCollectionUseCase>();
 builder.Services.AddScoped<GetQuestionsCollectionUseCase>();

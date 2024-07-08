@@ -7,9 +7,11 @@ namespace glosor_backend.API;
 
 public static class QuestionsCollectionsEndspoints
 {
-    public static async Task<IEnumerable<QuestionCollection>> GetAllQuestionCollections(GetAllQuestionsCollectionUseCase getAllQuestionsCollectionUseCase)
+    public static async Task<IResult> GetAllQuestionCollections(GetAllQuestionsCollectionUseCase getAllQuestionsCollectionUseCase)
     {
-        return await getAllQuestionsCollectionUseCase.Execute();
+        var result = await getAllQuestionsCollectionUseCase.Execute();
+
+        return Results.Ok(result);
     }
 
     public static async Task<QuestionCollection?> GetQuestionCollection(GetQuestionsCollectionUseCase getQuestionsCollectionUseCase, Guid id)
