@@ -44,7 +44,8 @@ public class QuestionRepository : IQuestionRepository
             string query = @"
                 SELECT q.Id, q.Text, q.AnswerText, q.QuestionTypeId, q.Description, q.CreatedDate, q.Occurrences, q.IncorrectAnswers, q.QuestionCollectionId, qc.Id, qc.Name, qc.Description 
                 FROM [dbo].Question q
-                INNER JOIN [dbo].QuestionCollection qc ON q.[QuestionCollectionId] = qc.Id";
+                INNER JOIN [dbo].QuestionCollection qc ON q.[QuestionCollectionId] = qc.Id
+                ORDER BY q.CreatedDate desc";
 
             return await connection.QueryAsync<Question, QuestionCollection, Question>(query, (question, questionCollection) =>
             {
@@ -81,7 +82,9 @@ public class QuestionRepository : IQuestionRepository
                     Text = @Text, 
                     AnswerText = @AnswerText, 
                     QuestionTypeId = @QuestionTypeId,
-                    Description = @Description
+                    Description = @Description,
+                    Occurrences = @Occurrences,
+                    IncorrectAnswers = @IncorrectAnswers
                 WHERE Id = @Id";
 
            var result = await connection.ExecuteAsync(updateQuery, question);

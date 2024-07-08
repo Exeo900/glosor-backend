@@ -36,6 +36,7 @@ builder.Services.AddScoped<GetQuestionUseCase>();
 builder.Services.AddScoped<UpdateQuestionUseCase>();
 builder.Services.AddScoped<DeleteQuestionUseCase>();
 builder.Services.AddScoped<GetRandomQuestionUseCase>();
+builder.Services.AddScoped<ValidateQuestionGuessUseCase>();
 
 builder.Services.AddScoped<GetAllQuestionsCollectionUseCase>();
 builder.Services.AddScoped<GetQuestionsCollectionUseCase>();

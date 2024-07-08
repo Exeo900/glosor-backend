@@ -63,4 +63,9 @@ public static class QuestionsEndpoints
     {
         return await getRandomQuestionUseCase.Execute(questionCollectionId);
     }
+
+    public static async Task<bool?> ValidateGuess(ValidateQuestionGuessUseCase validateQuestionGuessUseCase, Guid questionId, string userGuess)
+    {
+        return await validateQuestionGuessUseCase.Execute(questionId, userGuess);
+    }
 }
