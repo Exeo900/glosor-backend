@@ -1,5 +1,4 @@
 ﻿using Core.Ports;
-using Core.ValueObjects.QuestionObjects;
 
 namespace Core.UseCases.QuestionUseCases;
 public class DeleteQuestionUseCase
@@ -11,8 +10,8 @@ public class DeleteQuestionUseCase
         _questionRepository = questionRepository;
     }
 
-    public async Task<bool> Execute(DeleteQuestionRequest deleteQuestionRequest)
+    public async Task<bool> Execute(Guid id)
     {
-        return await _questionRepository.Delete(deleteQuestionRequest.Id);
+        return await _questionRepository.Delete(id);
     }
 }

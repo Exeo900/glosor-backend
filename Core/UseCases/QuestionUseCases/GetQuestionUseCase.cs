@@ -1,6 +1,5 @@
 ﻿using Core.Entities;
 using Core.Ports;
-using Core.ValueObjects.QuestionObjects;
 
 namespace Core.UseCases.QuestionUseCases;
 public class GetQuestionUseCase
@@ -12,8 +11,8 @@ public class GetQuestionUseCase
         _questionRepository = questionRepository;
     }
 
-    public async Task<Question?> Execute(GetQuestionRequest getQuestionRequest)
+    public async Task<Question?> Execute(Guid id)
     {
-        return await _questionRepository.Get(getQuestionRequest.Id);
+        return await _questionRepository.Get(id);
     }
 }

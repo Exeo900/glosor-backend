@@ -39,7 +39,7 @@ public static class QuestionsEndpoints
 
     public static async Task<Question?> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
     {
-        return await getAllQuestionsUseCase.Execute(new Core.ValueObjects.QuestionObjects.GetQuestionRequest() { Id = id });
+        return await getAllQuestionsUseCase.Execute(id);
     }
 
     public static async Task<bool> UpdateQuestionRequest(UpdateQuestionRequest updateQuestionRequest, UpdateQuestionUseCase updateQuestionUseCase)
@@ -56,7 +56,7 @@ public static class QuestionsEndpoints
 
     public static async Task<bool> DeleteQuestionRequest(DeleteQuestionUseCase deleteQuestionUseCase, Guid id)
     {
-        return await deleteQuestionUseCase.Execute(new Core.ValueObjects.QuestionObjects.DeleteQuestionRequest() { Id = id });
+        return await deleteQuestionUseCase.Execute(id);
     }
 
     public static async Task<WordQuestionData?> GetRandomQuestion(GetRandomQuestionUseCase getRandomQuestionUseCase, Guid questionCollectionId)
