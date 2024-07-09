@@ -104,4 +104,19 @@ public class QuestionRepository : IQuestionRepository
             return result > 0;
         }
     }
+
+    public async Task<Question?> GetByText(string text)
+    {
+        using (var connection = _connectionFactory.CreateConnection())
+        {
+            await connection.OpenAsync();
+
+            string query = $@"
+                SELECT q.Id, q.Text, q.AnswerText, q.QuestionTypeId, q.Description, q.CreatedDate, q.Occurrences, q.IncorrectAnswers, q.QuestionCollectionId 
+                FROM [dbo].[Question] q
+                WHERE Text = '{text}'";
+
+            return await connection.QueryFirstOrDefaultAsync<Question>(query);
+        }
+    }
 }

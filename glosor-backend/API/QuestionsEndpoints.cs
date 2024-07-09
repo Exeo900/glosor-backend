@@ -17,7 +17,7 @@ public static class QuestionsEndpoints
 
         if (!Enum.IsDefined(typeof(QuestionType), createQuestionRequest.QuestionTypeId))
         {
-            return Results.BadRequest($"Question type does not exists: {createQuestionRequest.QuestionTypeId}");
+            return Results.BadRequest($"Question type id '{createQuestionRequest.QuestionTypeId}' does not exists");
         }
 
         await createQuestionUseCase.Execute(new Core.ValueObjects.QuestionObjects.CreateQuestionRequest()

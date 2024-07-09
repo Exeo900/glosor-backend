@@ -8,4 +8,5 @@ public interface IQuestionRepository
     Task Store(Question question);
     Task<bool> Update(Question question);
     Task<bool> Delete(Guid id);
+    Task<Question?> GetByText(string text);
 }

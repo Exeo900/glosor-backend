@@ -16,7 +16,7 @@ public class ValidateQuestionGuessUseCase
 
         if (question == null)
         {
-            throw new Exception($"Question with id {questionId} not found!");
+            throw new KeyNotFoundException($"Question with id {questionId} not found!");
         }
 
         bool correctAnswer = question.AnswerText.Equals(guess);
