@@ -18,7 +18,8 @@ builder.Services.AddCors(options =>
                     "http://localhost:*",
                     "http://localhost:5173",
                     "https://localhost:*",
-                    "https://127.0.0.1:*"
+                    "https://127.0.0.1:*",
+                    "https://glosor-frontend.azurewebsites.net"
                 )
         .AllowAnyMethod()
         .AllowAnyHeader(); 
