@@ -3,6 +3,7 @@ using Core.Entities;
 using glosor_backend.Dtos;
 using Core.UseCases.QuestionUseCases;
 using Core.ValueObjects.WordQuestionObjects;
+using Core.Entities.Exceptions;
 
 namespace glosor_backend.API;
 
@@ -20,14 +21,21 @@ public static class QuestionsEndpoints
             return Results.BadRequest($"Question type id '{createQuestionRequest.QuestionTypeId}' does not exists");
         }
 
-        await createQuestionUseCase.Execute(new Core.ValueObjects.QuestionObjects.CreateQuestionRequest()
+        try
         {
-            Text = createQuestionRequest.Text,
-            AnswerText = createQuestionRequest.AnswerText,
-            QuestionType = createQuestionRequest.QuestionTypeId,
-            Description = createQuestionRequest.Description,
-            QuestionCollectionId = createQuestionRequest.QuestionCollectionId
-        });
+            await createQuestionUseCase.Execute(new Core.ValueObjects.QuestionObjects.CreateQuestionRequest()
+            {
+                Text = createQuestionRequest.Text,
+                AnswerText = createQuestionRequest.AnswerText,
+                QuestionType = createQuestionRequest.QuestionTypeId,
+                Description = createQuestionRequest.Description,
+                QuestionCollectionId = createQuestionRequest.QuestionCollectionId
+            });
+        }
+        catch (DuplicateQuestionException dqe)
+        {
+            return Results.Conflict(dqe.Message);
+        }
 
         return Results.Ok("Created");
     }

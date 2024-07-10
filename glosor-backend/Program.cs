@@ -4,6 +4,7 @@ using Adapter.Persistence.SqlServer.ConnectionFactory;
 using glosor_backend.API;
 using Core.UseCases.QuestionUseCases;
 using Core.UseCases.QuestionCollectionUseCases;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,25 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (contextFeature != null)
+        {
+            await context.Response.WriteAsJsonAsync(new
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Internal Server Error"
+            });
+        }
+    });
+});
 
 app.ConfigureApi();
 
