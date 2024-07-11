@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adapter.Persistence.SqlServer", "Adapter.Persistence.SqlServer\Adapter.Persistence.SqlServer.csproj", "{4E4A23B1-B4B2-4718-9E8E-AE4BA2D77DA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Core", "Test.Core\Test.Core.csproj", "{94F5562B-7CEA-4697-852C-842BBC75EB8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Core", "Test.Core\Test.Core.csproj", "{94F5562B-7CEA-4697-852C-842BBC75EB8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,7 +36,6 @@ Global
 		{A2D8B4AB-0E57-4FA7-A0DC-5A1274C94CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2D8B4AB-0E57-4FA7-A0DC-5A1274C94CED}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{A2D8B4AB-0E57-4FA7-A0DC-5A1274C94CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2D8B4AB-0E57-4FA7-A0DC-5A1274C94CED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2D8B4AB-0E57-4FA7-A0DC-5A1274C94CED}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{4E4A23B1-B4B2-4718-9E8E-AE4BA2D77DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E4A23B1-B4B2-4718-9E8E-AE4BA2D77DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
