@@ -27,7 +27,7 @@ public static class QuestionsEndpoints
             {
                 Text = createQuestionRequest.Text,
                 AnswerText = createQuestionRequest.AnswerText,
-                QuestionType = createQuestionRequest.QuestionTypeId,
+                QuestionTypeId = createQuestionRequest.QuestionTypeId,
                 Description = createQuestionRequest.Description,
                 QuestionCollectionId = createQuestionRequest.QuestionCollectionId
             });

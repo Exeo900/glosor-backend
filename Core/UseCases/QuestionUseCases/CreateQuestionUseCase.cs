@@ -26,7 +26,7 @@ public class CreateQuestionUseCase
         {
             Text = createQuestionRequest.Text,
             AnswerText = createQuestionRequest.AnswerText,
-            QuestionTypeId = createQuestionRequest.QuestionType,
+            QuestionTypeId = createQuestionRequest.QuestionTypeId,
             Description = createQuestionRequest.Description,
             QuestionCollectionId = createQuestionRequest.QuestionCollectionId
         };
