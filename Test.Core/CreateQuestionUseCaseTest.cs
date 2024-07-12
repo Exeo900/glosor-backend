@@ -4,7 +4,6 @@ using Core.Entities.Exceptions;
 using Core.Ports;
 using Core.UseCases.QuestionUseCases;
 using Core.ValueObjects.QuestionObjects;
-using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Test.Core;
