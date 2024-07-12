@@ -5,6 +5,7 @@ using glosor_backend.API;
 using Core.UseCases.QuestionUseCases;
 using Core.UseCases.QuestionCollectionUseCases;
 using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,11 @@ builder.Services.AddScoped<GetAllQuestionsCollectionUseCase>();
 builder.Services.AddScoped<GetQuestionsCollectionUseCase>();
 builder.Services.AddScoped<CreateQuestionsCollectionUseCase>();
 builder.Services.AddScoped<UpdateQuestionsCollectionUseCase>();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .CreateLogger();
 
 var app = builder.Build();
 

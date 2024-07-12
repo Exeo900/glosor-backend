@@ -1,4 +1,5 @@
 ﻿using Core.Ports;
+using Serilog;
 
 namespace Core.UseCases.QuestionUseCases;
 public class ValidateQuestionGuessUseCase
@@ -12,6 +13,8 @@ public class ValidateQuestionGuessUseCase
 
     public async Task<bool> Execute(Guid questionId, string guess)
     {
+        Log.Information($"Execute {nameof(ValidateQuestionGuessUseCase)} - validate question with id {questionId} with guess '{guess}'");
+
         var question = await _questionRepository.Get(questionId);
 
         if (question == null)

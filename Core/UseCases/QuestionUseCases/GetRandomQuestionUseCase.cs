@@ -1,5 +1,6 @@
 ﻿using Core.Ports;
 using Core.ValueObjects.WordQuestionObjects;
+using Serilog;
 
 namespace Core.UseCases.QuestionUseCases;
 public class GetRandomQuestionUseCase
@@ -13,6 +14,8 @@ public class GetRandomQuestionUseCase
 
     public async Task<WordQuestionData?> Execute(Guid questionCollectionId)
     {
+        Log.Information($"Execute {nameof(GetRandomQuestionUseCase)} - Get random question with question collection id {{questionCollectionId}}", questionCollectionId);
+
         return await _wordQuestionRepository.GetRandom(questionCollectionId);
     }
 }

@@ -2,6 +2,7 @@
 using Core.Entities.Exceptions;
 using Core.Ports;
 using Core.ValueObjects.QuestionObjects;
+using Serilog;
 
 namespace Core.UseCases.QuestionUseCases;
 public class CreateQuestionUseCase
@@ -15,6 +16,8 @@ public class CreateQuestionUseCase
 
     public async Task<Question> Execute(CreateQuestionRequest createQuestionRequest)
     {
+        Log.Information($"Execute {nameof(CreateQuestionUseCase)} - New question with Text: {{Text}}", createQuestionRequest.Text);
+
         var existingQuestion = await _questionRepository.GetByText(createQuestionRequest.Text);
 
         if (existingQuestion != null)
@@ -30,6 +33,8 @@ public class CreateQuestionUseCase
             Description = createQuestionRequest.Description,
             QuestionCollectionId = createQuestionRequest.QuestionCollectionId
         };
+
+        Log.Information("Creating question {@question}", question);
 
         await _questionRepository.Store(question);
 
