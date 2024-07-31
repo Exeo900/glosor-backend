@@ -1,5 +1,6 @@
 ﻿using Adapter.Persistence.SqlServer.ConnectionFactory;
 using Core.Entities;
+using Core.Entities.Exceptions;
 using Core.Ports;
 using Core.ValueObjects.WordQuestionObjects;
 using Dapper;
@@ -8,6 +9,7 @@ namespace Adapter.Persistence.SqlServer.Repositories;
 public class WordQuestionRepository : IWordQuestionRepository
 {
     public readonly IConnectionFactory _connectionFactory;
+    private readonly int AlternativeAmount = 4;
 
     public WordQuestionRepository(IConnectionFactory configuration)
     {
@@ -18,6 +20,7 @@ public class WordQuestionRepository : IWordQuestionRepository
     {
         using (var connection = _connectionFactory.CreateConnection())
         {
+            // Todo: Move this logic to a use case instead
             string selectQuery = $@"WITH Top20Questions AS (
                     SELECT TOP 20 
                             'x' as 'Split1', q.Id AS QuestionId, q.Text, q.AnswerText, q.QuestionTypeId, q.Description AS QuestionDescription, q.CreatedDate, q.Occurrences, q.IncorrectAnswers, q.QuestionCollectionId, 
@@ -47,9 +50,20 @@ public class WordQuestionRepository : IWordQuestionRepository
             var result = await connection.QueryAsync<WordQuestionData, Question, QuestionCollection, string, WordQuestionData>(selectQuery,
                 (wordQuestionData, question, questionCollection, alternatives) =>
                 {
+                    if (alternatives == null)
+                    {
+                        throw new InsufficientAlternativesException($"Could not get any suitable alternatives for question '{question.Text}'");
+                    }
+
                     wordQuestionData.Question = question;
                     wordQuestionData.Question.QuestionCollection = questionCollection;
                     wordQuestionData.Alternatives = alternatives.Split(new[] { ";; " }, StringSplitOptions.None);
+
+                    if (wordQuestionData.Alternatives.Count() != AlternativeAmount)
+                    {
+                        throw new InsufficientAlternativesException($"Could not get suitable alternatives for question '{question.Text}', found {wordQuestionData.Alternatives.Count()} but {AlternativeAmount} is required");
+                    }
+
                     return wordQuestionData;
                 },
                 splitOn: "Id,Id,Alternatives");

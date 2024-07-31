@@ -67,9 +67,18 @@ public static class QuestionsEndpoints
         return await deleteQuestionUseCase.Execute(id);
     }
 
-    public static async Task<WordQuestionData?> GetRandomQuestion(GetRandomQuestionUseCase getRandomQuestionUseCase, Guid questionCollectionId)
+    public static async Task<IResult?> GetRandomQuestion(GetRandomQuestionUseCase getRandomQuestionUseCase, Guid questionCollectionId)
     {
-        return await getRandomQuestionUseCase.Execute(questionCollectionId);
+        try
+        {
+            var result = await getRandomQuestionUseCase.Execute(questionCollectionId);
+
+            return Results.Ok(result);
+        }
+        catch (InsufficientAlternativesException ex)
+        {
+            return Results.Problem(ex.Message);
+        }
     }
 
     public static async Task<bool?> ValidateGuess(ValidateQuestionGuessUseCase validateQuestionGuessUseCase, Guid questionId, string userGuess)
