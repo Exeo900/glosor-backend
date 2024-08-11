@@ -6,11 +6,17 @@ using Core.UseCases.QuestionUseCases;
 using Core.UseCases.QuestionCollectionUseCases;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Core.UseCases.AuthenticationUseCases;
+using Adapter.Authentication;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using glosor_backend.Swagger;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var config = builder.Configuration;
 
 builder.Services.AddCors(options =>
 {
@@ -24,14 +30,38 @@ builder.Services.AddCors(options =>
                     "https://glosor-frontend.azurewebsites.net"
                 )
         .AllowAnyMethod()
-        .AllowAnyHeader(); 
+        .AllowAnyHeader();
     });
 });
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(o => o.TokenValidationParameters = new TokenValidationParameters()
+{
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+    ValidIssuer = config["JwtSettings:Issuer"],
+    ValidAudience = config["JwtSettings:Audience"],
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!))
+});
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionCollectionRepository, QuestionCollectionRepository>();
 builder.Services.AddScoped<IWordQuestionRepository, WordQuestionRepository>();
 builder.Services.AddScoped<IConnectionFactory, ConnectionFactory>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddScoped<CreateQuestionUseCase>();
 builder.Services.AddScoped<GetAllQuestionsUseCase>();
@@ -46,6 +76,9 @@ builder.Services.AddScoped<GetQuestionsCollectionUseCase>();
 builder.Services.AddScoped<CreateQuestionsCollectionUseCase>();
 builder.Services.AddScoped<UpdateQuestionsCollectionUseCase>();
 
+builder.Services.AddScoped<GenerateTokenUseCase>();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
@@ -58,6 +91,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 

@@ -2,13 +2,14 @@
 using Core.Entities;
 using glosor_backend.Dtos;
 using Core.UseCases.QuestionUseCases;
-using Core.ValueObjects.WordQuestionObjects;
 using Core.Entities.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace glosor_backend.API;
 
 public static class QuestionsEndpoints 
 {
+    [Authorize]
     public static async Task<IResult> CreateQuestionRequest(CreateQuestionUseCase createQuestionUseCase, CreateQuestionRequest createQuestionRequest)
     {
         if (createQuestionRequest == null)
@@ -40,16 +41,19 @@ public static class QuestionsEndpoints
         return Results.Ok("Created");
     }
 
+    [Authorize]
     public static async Task<IEnumerable<Question>> GetAllQuestionRequests(GetAllQuestionsUseCase getAllQuestionsUseCase)
     {
         return await getAllQuestionsUseCase.Execute();
     }
 
+    [Authorize]
     public static async Task<Question?> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
     {
         return await getAllQuestionsUseCase.Execute(id);
     }
 
+    [Authorize]
     public static async Task<bool> UpdateQuestionRequest(UpdateQuestionRequest updateQuestionRequest, UpdateQuestionUseCase updateQuestionUseCase)
     {
         return await updateQuestionUseCase.Execute(new Core.ValueObjects.QuestionObjects.UpdateQuestionRequest()
@@ -62,11 +66,13 @@ public static class QuestionsEndpoints
         });
     }
 
+    [Authorize]
     public static async Task<bool> DeleteQuestionRequest(DeleteQuestionUseCase deleteQuestionUseCase, Guid id)
     {
         return await deleteQuestionUseCase.Execute(id);
     }
 
+    [Authorize]
     public static async Task<IResult?> GetRandomQuestion(GetRandomQuestionUseCase getRandomQuestionUseCase, Guid questionCollectionId)
     {
         try
@@ -81,6 +87,7 @@ public static class QuestionsEndpoints
         }
     }
 
+    [Authorize]
     public static async Task<bool?> ValidateGuess(ValidateQuestionGuessUseCase validateQuestionGuessUseCase, Guid questionId, string userGuess)
     {
         return await validateQuestionGuessUseCase.Execute(questionId, userGuess);

@@ -2,11 +2,13 @@
 using Core.UseCases.QuestionCollectionUseCases;
 using Core.UseCases.QuestionUseCases;
 using glosor_backend.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace glosor_backend.API;
 
 public static class QuestionsCollectionsEndspoints
 {
+    [Authorize]
     public static async Task<IResult> GetAllQuestionCollections(GetAllQuestionsCollectionUseCase getAllQuestionsCollectionUseCase)
     {
         var result = await getAllQuestionsCollectionUseCase.Execute();
@@ -14,11 +16,13 @@ public static class QuestionsCollectionsEndspoints
         return Results.Ok(result);
     }
 
+    [Authorize]
     public static async Task<QuestionCollection?> GetQuestionCollection(GetQuestionsCollectionUseCase getQuestionsCollectionUseCase, Guid id)
     {
         return await getQuestionsCollectionUseCase.Execute(id);
     }
 
+    [Authorize]
     public static async Task<IResult> CreateQuestionCollection(CreateQuestionsCollectionUseCase createQuestionsCollectionUseCase, CreateQuestionsCollectionRequest createQuestionsCollectionRequest)
     {
         if (createQuestionsCollectionRequest == null)
@@ -35,6 +39,7 @@ public static class QuestionsCollectionsEndspoints
         return Results.Ok("Created");
     }
 
+    [Authorize]
     public static async Task<bool> UpdateQuestionRequest(UpdateQuestionsCollectionUseCase updateQuestionCollectionUseCase, UpdateQuestionCollectionRequest updateQuestionCollectionRequest)
     {
         return await updateQuestionCollectionUseCase.Execute(new Core.ValueObjects.QuestionCollectionObjects.UpdateQuestionCollectionRequest()
