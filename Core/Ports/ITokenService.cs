@@ -1,7 +1,8 @@
 ﻿using Core.Entities;
+using Core.ValueObjects.Authentication;
 
 namespace Core.Ports;
 public interface ITokenService
 {
-    string GenerateToken(User user);
+    TokenAuthenticationDetails GenerateToken(User user);
 }

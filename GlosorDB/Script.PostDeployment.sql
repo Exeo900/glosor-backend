@@ -19,3 +19,10 @@ begin
 	(NEWID(), 'Pogrom', 'Våldsam och blodig förföljelse av en folkgrupp', 1, @SwedishQuestionCollectionId),
 	(NEWID(), 'Curmudgeon', 'Surpuppa', 1, @EnglishQuestionCollectionId)
 end
+
+if not exists (select 1 from dbo.Question)
+	begin 
+	insert into dbo.[User] ([Id], [UserName], [Password]) 
+	values 
+	(NEWID(), 'Pontus', 'Hunter2')
+end

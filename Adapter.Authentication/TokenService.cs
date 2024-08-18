@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Ports;
+using Core.ValueObjects.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,7 +17,7 @@ public class TokenService : ITokenService
         _configuration = configuration;
     }
 
-    public string GenerateToken(User user)
+    public TokenAuthenticationDetails GenerateToken(User user)
     {
         var jwtOptions = new JwtOptions() 
         {
@@ -28,7 +29,7 @@ public class TokenService : ITokenService
         var claims = new Claim[] 
         { 
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email)        
+            new Claim(JwtRegisteredClaimNames.Email, user.UserName) 
         };
 
         var key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
@@ -43,8 +44,12 @@ public class TokenService : ITokenService
             DateTime.Now.AddHours(1),
             signingCredentials);
 
-        string tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+        var tokenDetails = new TokenAuthenticationDetails()
+        {
+            Token = new JwtSecurityTokenHandler().WriteToken(token),
+            RefreshTokenId = Guid.NewGuid().ToString()  // TODO: Add refresh token expiration date.
+        };
 
-        return tokenValue;
+        return tokenDetails;
     }
 }

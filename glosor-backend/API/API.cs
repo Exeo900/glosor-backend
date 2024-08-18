@@ -1,5 +1,4 @@
-﻿using Core.UseCases.AuthenticationUseCases;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace glosor_backend.API;
 
@@ -8,7 +7,8 @@ public static class API
     public static void ConfigureApi(this WebApplication webApplicationBuilder)
     {
         webApplicationBuilder.MapGet("/siteInfo", SiteInfo);
-        webApplicationBuilder.MapGet("/login", Login);
+        webApplicationBuilder.MapPost("/login", AutheticationEndpoints.Login);
+        webApplicationBuilder.MapPost("/refresh", AutheticationEndpoints.Refresh);
 
         webApplicationBuilder.MapGet("/glosorQuestions", QuestionsEndpoints.GetAllQuestionRequests);
         webApplicationBuilder.MapGet("/glosorQuestions/{Id:guid}", QuestionsEndpoints.GetQuestionRequest);
@@ -35,13 +35,5 @@ public static class API
         {
             return Results.Problem(ex.Message);
         }
-    }
-
-    [AllowAnonymous]
-    public static string Login(GenerateTokenUseCase generateTokenUseCase)
-    {
-        var generatedToken = generateTokenUseCase.Execute();
-
-        return generatedToken;
-    }
+    } 
 }

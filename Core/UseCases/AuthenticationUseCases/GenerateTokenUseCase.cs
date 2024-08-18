@@ -1,27 +1,34 @@
 ﻿using Core.Ports;
-using Core.Entities;
+using Core.ValueObjects.Authentication;
 
 namespace Core.UseCases.AuthenticationUseCases;
 
 public class GenerateTokenUseCase
 {
     private readonly ITokenService _tokenService;
+    private readonly IUserRepository _userRepository;
 
-    public GenerateTokenUseCase(ITokenService tokenService)
+    public GenerateTokenUseCase(ITokenService tokenService, IUserRepository userRepository)
     {
         _tokenService = tokenService;
+        _userRepository = userRepository;
     }
 
-    public string Execute()
+    public async Task<TokenAuthenticationDetails> Execute(string userName, string password)
     {
-        // Todo: Add user table along with a login process and here get user and generate its token, if user name and password match.
-        var user = new User() 
-        { 
-            Id = Guid.NewGuid(),
-            Email = "test@test.se", 
-            Password = "12341234123412341234" 
-        };
+        var user = await _userRepository.GetUserByUserNameAndPassword(userName, password);
 
-        return _tokenService.GenerateToken(user);
+        if (user == null)
+        {
+            throw new Exception("Gick inte att logga in!");
+        }
+
+        var tokenDetails =  _tokenService.GenerateToken(user);
+
+        user.RefreshTokenId = tokenDetails.RefreshTokenId;
+
+        _userRepository.Update(user);
+
+        return tokenDetails;
     }
 }

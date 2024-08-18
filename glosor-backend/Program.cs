@@ -62,6 +62,7 @@ builder.Services.AddScoped<IQuestionCollectionRepository, QuestionCollectionRepo
 builder.Services.AddScoped<IWordQuestionRepository, WordQuestionRepository>();
 builder.Services.AddScoped<IConnectionFactory, ConnectionFactory>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<CreateQuestionUseCase>();
 builder.Services.AddScoped<GetAllQuestionsUseCase>();
@@ -74,9 +75,10 @@ builder.Services.AddScoped<ValidateQuestionGuessUseCase>();
 builder.Services.AddScoped<GetAllQuestionsCollectionUseCase>();
 builder.Services.AddScoped<GetQuestionsCollectionUseCase>();
 builder.Services.AddScoped<CreateQuestionsCollectionUseCase>();
-builder.Services.AddScoped<UpdateQuestionsCollectionUseCase>();
+builder.Services.AddScoped<UpdateQuestionsCollectionUseCase>(); 
 
 builder.Services.AddScoped<GenerateTokenUseCase>();
+builder.Services.AddScoped<RefreshTokenUseCase>();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
 
 Log.Logger = new LoggerConfiguration()

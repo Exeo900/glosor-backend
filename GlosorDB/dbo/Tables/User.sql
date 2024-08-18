@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[User]
+(
+	[Id] UNIQUEIDENTIFIER CONSTRAINT [PK_User_Id] PRIMARY KEY default NEWID(),
+	[UserName] NVARCHAR(255) NOT NULL,
+	[Password] NVARCHAR(255) NOT NULL,
+	[RefreshTokenId] UNIQUEIDENTIFIER NULL
+)
+
+
