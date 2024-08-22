@@ -33,7 +33,7 @@ public class UserRepository : IUserRepository
 
             string query = $@"SELECT Id, UserName, Password FROM dbo.[User] where RefreshTokenId = '{refreshToken}'";
 
-            return await connection.QueryFirstAsync<User>(query);
+            return await connection.QueryFirstOrDefaultAsync<User>(query);
         }        
     }
 

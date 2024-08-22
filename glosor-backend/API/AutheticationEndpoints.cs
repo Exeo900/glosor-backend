@@ -1,4 +1,5 @@
-﻿using Core.UseCases.AuthenticationUseCases;
+﻿using Core.Entities.Exceptions;
+using Core.UseCases.AuthenticationUseCases;
 using Core.ValueObjects.Authentication;
 using glosor_backend.Dtos.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,18 @@ public static class AutheticationEndpoints
     }
 
     [AllowAnonymous]
-    public static async Task<TokenAuthenticationDetails> Refresh([FromBody] RefreshTokenRequest refreshTokenRequest, RefreshTokenUseCase refreshTokenUseCase)
+    public static async Task<IResult?> Refresh([FromBody] RefreshTokenRequest refreshTokenRequest, RefreshTokenUseCase refreshTokenUseCase)
     {
-        var refreshedToken = await refreshTokenUseCase.Execute(refreshTokenRequest.Token, refreshTokenRequest.RefreshTokenId);
+        try
+        {
+            var refreshedToken = await refreshTokenUseCase.Execute(refreshTokenRequest.Token, refreshTokenRequest.RefreshTokenId);
 
-        return refreshedToken;
+            return Results.Ok(refreshedToken);
+        }
+        catch (UserLoggedOutException uloe)
+        {
+            return Results.Problem(uloe.Message);
+        }   
     }
 }
+    
