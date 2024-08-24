@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Exceptions;
 using Core.Ports;
 using Core.ValueObjects.Authentication;
+using Serilog;
 
 namespace Core.UseCases.AuthenticationUseCases;
 
@@ -15,24 +16,30 @@ public class RefreshTokenUseCase
         _userRepository = userRepository;
     }
 
-    public async Task<TokenAuthenticationDetails> Execute(string expiredToken, Guid refreshToken)
+    public async Task<TokenAuthenticationDetails> Execute(string expiredToken, Guid refreshTokenId)
     {
+        Log.Information($"Execute {nameof(RefreshTokenUseCase)} - Attempting to refresh JWT token with refresh token id: {{refreshToken}}", refreshTokenId);
+
         // TODO: decode expiredToken and check if user match with refresh token.
 
-        var user = await _userRepository.GetUserByRefreshToken(refreshToken);
+        var user = await _userRepository.GetUserByRefreshToken(refreshTokenId);
 
         if (user == null)
         {
             // TODO: fix this exception, dont show why user is logged out.
-            throw new UserLoggedOutException($"No user found with refresh token: {refreshToken}");
+            Log.Information($"Execute {nameof(RefreshTokenUseCase)} - Failed to refresh JWT token with refresh token id: {{refreshToken}}", refreshTokenId);
+
+            throw new UserLoggedOutException($"No user found with refresh token: {refreshTokenId}");
         }
 
-        var token = _tokenService.GenerateToken(user);
+        var tokenDetails = _tokenService.GenerateToken(user);
 
-        user.RefreshTokenId = token.RefreshTokenId;
+        user.RefreshTokenId = tokenDetails.RefreshTokenId;
 
         _userRepository.Update(user);
 
-        return token;
+        Log.Information("Execute RefreshTokenUseCase - Refresh successful! Token details: {@TokenDetails}", tokenDetails);
+
+        return tokenDetails;
     }
 }

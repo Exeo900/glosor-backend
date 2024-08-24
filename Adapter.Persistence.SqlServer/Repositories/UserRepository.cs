@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
         _connectionFactory = configuration;
     }
 
-    public async Task<User> GetUserByUserNameAndPassword(string userName, string password)
+    public async Task<User?> GetUserByUserNameAndPassword(string userName, string password)
     {
         using (var connection = _connectionFactory.CreateConnection())
         {
@@ -21,11 +21,11 @@ public class UserRepository : IUserRepository
 
             string query = $@"SELECT Id, UserName, Password FROM dbo.[User] where UserName = '{userName}' AND Password = '{password}'";
 
-            return await connection.QueryFirstAsync<User>(query);
+            return await connection.QueryFirstOrDefaultAsync<User>(query);
         }
     }
 
-    public async Task<User> GetUserByRefreshToken(Guid refreshToken)
+    public async Task<User?> GetUserByRefreshToken(Guid refreshToken)
     {
         using (var connection = _connectionFactory.CreateConnection())
         {

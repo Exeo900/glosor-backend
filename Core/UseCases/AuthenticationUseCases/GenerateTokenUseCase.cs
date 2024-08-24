@@ -1,5 +1,6 @@
 ﻿using Core.Ports;
 using Core.ValueObjects.Authentication;
+using Serilog;
 
 namespace Core.UseCases.AuthenticationUseCases;
 
@@ -16,10 +17,14 @@ public class GenerateTokenUseCase
 
     public async Task<TokenAuthenticationDetails> Execute(string userName, string password)
     {
+        Log.Information($"Execute {nameof(GenerateTokenUseCase)} - Attempting to log in with user credentials: {{userName}} {{password}}", userName, password);
+
         var user = await _userRepository.GetUserByUserNameAndPassword(userName, password);
 
         if (user == null)
         {
+            Log.Information($"Execute {nameof(GenerateTokenUseCase)} - Login failed with user credentials: {{userName}} {{password}}", userName, password);
+
             throw new Exception("Gick inte att logga in!");
         }
 
@@ -28,6 +33,8 @@ public class GenerateTokenUseCase
         user.RefreshTokenId = tokenDetails.RefreshTokenId;
 
         _userRepository.Update(user);
+
+        Log.Information("Execute GenerateTokenUseCase - Refresh successful! Token details: {@TokenDetails}",  tokenDetails);
 
         return tokenDetails;
     }
