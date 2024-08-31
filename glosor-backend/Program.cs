@@ -84,7 +84,6 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfi
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
-    /*WriteTo.AzureApp()*/
     .CreateLogger();
 
 var app = builder.Build();
