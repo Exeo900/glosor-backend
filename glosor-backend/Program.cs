@@ -14,6 +14,7 @@ using Adapter.Authentication;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using glosor_backend.Swagger;
 using Microsoft.Extensions.Options;
+using Microsoft.ApplicationInsights.Extensibility;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -56,7 +57,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionCollectionRepository, QuestionCollectionRepository>();
 builder.Services.AddScoped<IWordQuestionRepository, WordQuestionRepository>();
@@ -84,6 +84,7 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfi
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
+    .WriteTo.ApplicationInsights(new TelemetryConfiguration { InstrumentationKey = "007da16d-e919-4739-8506-48a9c3da087d" }, TelemetryConverter.Traces)
     .CreateLogger();
 
 var app = builder.Build();
