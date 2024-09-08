@@ -81,11 +81,18 @@ builder.Services.AddScoped<GenerateTokenUseCase>();
 builder.Services.AddScoped<RefreshTokenUseCase>();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
 
-Log.Logger = new LoggerConfiguration()
+var logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
-    .WriteTo.Console()
-    .WriteTo.ApplicationInsights(new TelemetryConfiguration { InstrumentationKey = "007da16d-e919-4739-8506-48a9c3da087d" }, TelemetryConverter.Traces)
-    .CreateLogger();
+    .WriteTo.Console();
+
+if (!builder.Environment.IsDevelopment())
+{
+    logger = logger.WriteTo.ApplicationInsights(
+          new TelemetryConfiguration { InstrumentationKey = "007da16d-e919-4739-8506-48a9c3da087d" },
+          TelemetryConverter.Traces);
+}
+
+Log.Logger = logger.CreateLogger();
 
 var app = builder.Build();
 

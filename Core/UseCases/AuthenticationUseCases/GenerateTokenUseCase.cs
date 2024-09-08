@@ -34,7 +34,7 @@ public class GenerateTokenUseCase
 
         _userRepository.Update(user);
 
-        Log.Information("Execute GenerateTokenUseCase - Refresh successful! Token details: {@TokenDetails}",  tokenDetails);
+        Log.Information("Execute GenerateTokenUseCase - Login and token creation was successful! Token details: {@TokenDetails}",  tokenDetails);
 
         return tokenDetails;
     }
