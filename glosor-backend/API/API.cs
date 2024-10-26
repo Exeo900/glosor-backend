@@ -12,9 +12,10 @@ public static class API
 
         webApplicationBuilder.MapGet("/glosorQuestions", QuestionsEndpoints.GetAllQuestionRequests);
         webApplicationBuilder.MapGet("/glosorQuestions/{Id:guid}", QuestionsEndpoints.GetQuestionRequest);
+        webApplicationBuilder.MapGet("/glosorQuestions/search", QuestionsEndpoints.GetQuestionsBySearchTermRequests);
         webApplicationBuilder.MapPost("/glosorQuestions", QuestionsEndpoints.CreateQuestionRequest);
         webApplicationBuilder.MapPut("/glosorQuestions", QuestionsEndpoints.UpdateQuestionRequest);
-        webApplicationBuilder.MapDelete("/glosorQuestions", QuestionsEndpoints.DeleteQuestionRequest);
+        webApplicationBuilder.MapDelete("/glosorQuestions", QuestionsEndpoints.DeleteQuestionRequest);        
 
         webApplicationBuilder.MapGet("/glosorQuestions/getRandom/", QuestionsEndpoints.GetRandomQuestion);
         webApplicationBuilder.MapPost("/glosorQuestions/validate/", QuestionsEndpoints.ValidateGuess);

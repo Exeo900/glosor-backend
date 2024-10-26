@@ -18,9 +18,9 @@ public class CreateQuestionUseCase
     {
         Log.Information($"Execute {nameof(CreateQuestionUseCase)} - New question with Text: {{Text}}", createQuestionRequest.Text);
 
-        var existingQuestion = await _questionRepository.GetByText(createQuestionRequest.Text);
+        var existingQuestions = await _questionRepository.GetByText(createQuestionRequest.Text);
 
-        if (existingQuestion != null)
+        if (existingQuestions != null && existingQuestions.Any())
         {
             throw new DuplicateQuestionException($"Question with text '{createQuestionRequest.Text}' already exists");
         }

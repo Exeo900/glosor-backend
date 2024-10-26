@@ -67,6 +67,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<CreateQuestionUseCase>();
 builder.Services.AddScoped<GetAllQuestionsUseCase>();
 builder.Services.AddScoped<GetQuestionUseCase>();
+builder.Services.AddScoped<GetQuestionBySearchTermUseCase>();
 builder.Services.AddScoped<UpdateQuestionUseCase>();
 builder.Services.AddScoped<DeleteQuestionUseCase>();
 builder.Services.AddScoped<GetRandomQuestionUseCase>();

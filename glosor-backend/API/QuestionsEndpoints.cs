@@ -47,6 +47,20 @@ public static class QuestionsEndpoints
         return await getAllQuestionsUseCase.Execute();
     }
 
+
+    [Authorize]
+    public static async Task<IResult> GetQuestionsBySearchTermRequests(GetQuestionBySearchTermUseCase getQuestionBySearchTermUseCase, string searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm) || searchTerm.Count() <= 1)
+        {
+            return Results.Problem("The search term is too short.");
+        }
+
+        var existingQuestions = await getQuestionBySearchTermUseCase.Execute(searchTerm);
+
+        return Results.Ok(existingQuestions);
+    }
+
     [Authorize]
     public static async Task<Question?> GetQuestionRequest(GetQuestionUseCase getAllQuestionsUseCase, Guid id)
     {

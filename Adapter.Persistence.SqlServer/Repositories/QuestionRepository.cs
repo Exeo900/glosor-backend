@@ -105,7 +105,7 @@ public class QuestionRepository : IQuestionRepository
         }
     }
 
-    public async Task<Question?> GetByText(string text)
+    public async Task<IEnumerable<Question>> GetByText(string text)
     {
         using (var connection = _connectionFactory.CreateConnection())
         {
@@ -116,7 +116,7 @@ public class QuestionRepository : IQuestionRepository
                 FROM [dbo].[Question] q
                 WHERE Text = '{text}'";
 
-            return await connection.QueryFirstOrDefaultAsync<Question>(query);
+            return await connection.QueryAsync<Question>(query);
         }
     }
 }
