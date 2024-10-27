@@ -20,7 +20,7 @@ begin
 	(NEWID(), 'Curmudgeon', 'Surpuppa', 1, @EnglishQuestionCollectionId)
 end
 
-if not exists (select 1 from dbo.Question)
+if not exists (select 1 from dbo.[User])
 	begin 
 	insert into dbo.[User] ([Id], [UserName], [Password]) 
 	values 

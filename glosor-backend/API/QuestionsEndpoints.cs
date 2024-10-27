@@ -51,7 +51,7 @@ public static class QuestionsEndpoints
     [Authorize]
     public static async Task<IResult> GetQuestionsBySearchTermRequests(GetQuestionBySearchTermUseCase getQuestionBySearchTermUseCase, string searchTerm)
     {
-        if (string.IsNullOrEmpty(searchTerm) || searchTerm.Count() <= 1)
+        if (string.IsNullOrEmpty(searchTerm) || searchTerm.Length <= 1)
         {
             return Results.Problem("The search term is too short.");
         }

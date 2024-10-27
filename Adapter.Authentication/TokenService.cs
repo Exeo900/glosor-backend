@@ -28,8 +28,8 @@ public class TokenService : ITokenService
 
         var claims = new Claim[] 
         { 
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.UserName) 
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.UserName) 
         };
 
         var key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);

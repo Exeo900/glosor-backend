@@ -24,7 +24,7 @@ public class CreateQuestionUseCaseTest
         };
 
         questionRepositoryMock = new Mock<IQuestionRepository>();
-        questionRepositoryMock.Setup(x => x.GetByText(Question.Text)).ReturnsAsync(Question);
+        questionRepositoryMock.Setup(x => x.GetByText(Question.Text)).ReturnsAsync(new List<Question>() { Question });
 
         sut = new CreateQuestionUseCase(questionRepositoryMock.Object);
     }
